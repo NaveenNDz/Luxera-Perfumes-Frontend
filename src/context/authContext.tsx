@@ -1,45 +1,30 @@
-import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState, type ReactNode } from "react";
 
 export const AuthContext = createContext<any>(null);
 
-export default function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+export default function AuthProvider({ children }: { children: ReactNode }) {
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const [user, setUser] = useState<any>(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
 
-    if (token) {
-      setLoading(true);
-      axios
-        .get("http://localhost:3000/api/v1/auth/me", {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((res) => {
-          if (res.data?.data) {
-            setUser(res.data.data);
-          } else {
-            setUser(null);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          setUser(null);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-      setUser(null);
-    }
-  }, []);
+  });
+
+  const login = (data: any) => {
+    
+    setUser(data);
+    localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("ACCESS_TOKEN", data.access_token);
+    localStorage.setItem("REFRESH_TOKEN", data.refresh_token);
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.clear();
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
