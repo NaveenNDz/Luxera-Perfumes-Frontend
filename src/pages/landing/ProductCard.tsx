@@ -64,7 +64,7 @@ export default function ProductCard({
       <div className="pt-4 mt-4 border-t border-white/[0.08] flex items-center justify-between">
         <div>
           <span className="text-[10px] text-zinc-400 block font-medium">Price</span>
-          <span className="font-serif text-lg font-bold text-white tracking-tight">
+          <span className="text-base font-bold text-white tracking-tight">
             Rs. {(Number(product.price) || 0).toLocaleString()}
           </span>
           <span className="text-[10px] text-zinc-500 block">{product.volume}</span>
@@ -82,12 +82,12 @@ export default function ProductCard({
           {isInCart ? (
             <>
               <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-              In Bag
+              In Cart
             </>
           ) : (
             <>
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-              Add to Bag
+              Add to Cart
             </>
           )}
         </button>

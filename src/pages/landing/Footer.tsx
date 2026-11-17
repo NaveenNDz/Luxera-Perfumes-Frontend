@@ -9,7 +9,7 @@ export default function Footer() {
               Your premier destination for 100% authentic original fragrances in Sri Lanka.
             </p>
             <div className="pt-1 text-[11px] text-[#e2c785] font-semibold">
-              🇱🇰 Island-wide Delivery & Cash on Delivery Available
+              Island-wide Delivery & Cash on Delivery Available
             </div>
           </div>
 
@@ -29,14 +29,14 @@ export default function Footer() {
             <div className="space-y-2 text-[11px] leading-relaxed">
               <p className="text-white font-semibold">LUXERA Perfumes</p>
               <p>Colombo 03, Sri Lanka</p>
-              <p className="text-[#e2c785] pt-1 font-semibold">Hotline: +94 77 123 4567</p>
-              <p className="text-zinc-400">Monday – Saturday: 9:00 AM – 8:00 PM</p>
+              <p className="text-[#e2c785] pt-1 font-semibold">Hotline: +94 75 520 1694</p>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
-          <p>© 2026 LUXERA Perfumes. All rights reserved.</p>
+          <p>© 2026 LUXERA Perfumes. All rights reserved.
+           </p>
           <div className="flex items-center gap-5">
             <span>100% Original</span>
             <span>·</span>

@@ -36,8 +36,6 @@ import {
   ShieldCheck,
   UserPlus,
   ArrowLeft,
-  Users,
-  Shield,
   Edit2,
   Trash2,
 } from 'lucide-react';
@@ -58,6 +56,7 @@ export default function AdminDashboard({}: AdminDashboardProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [orderFilter, setOrderFilter] = useState('all');
+  const [productCategoryFilter, setProductCategoryFilter] = useState('all');
 
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<OrderItem[]>([]);
@@ -82,13 +81,13 @@ export default function AdminDashboard({}: AdminDashboardProps) {
       setProducts(Array.isArray(fetchedProducts) ? fetchedProducts : []);
       setOrders(Array.isArray(fetchedOrders) ? fetchedOrders : []);
 
-      
+      // Attempt to load backend customers aggregation
       try {
         const fetchedCustomers = await getCustomers();
         if (Array.isArray(fetchedCustomers)) setCustomers(fetchedCustomers);
       } catch {}
 
-      
+      // If user is admin, load system users
       if (isAdmin) {
         try {
           const fetchedUsers = await getSystemUsers();
@@ -241,29 +240,6 @@ export default function AdminDashboard({}: AdminDashboardProps) {
     }
   };
 
-  const handleExportCSV = () => {
-    if (orders.length === 0) {
-      toast.error('No orders to export');
-      return;
-    }
-
-    const header = 'Order ID,Customer,Email,Flacon,Quantity,Total,Status,Date\n';
-    const rows = orders
-      .map(
-        (o) =>
-          `"${o._id || o.id || ''}","${o.customer || ''}","${o.email || ''}","${o.flacon || ''}",${Number(o.quantity) || 0},${Number(o.total) || 0},"${o.status || ''}","${o.date || ''}"`
-      )
-      .join('\n');
-
-    const blob = new Blob([header + rows], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Orders_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    toast.success('Orders exported as CSV');
-  };
-
   const totalRevenue = (orders || []).reduce((sum, o) => sum + (Number(o?.total) || 0), 0);
   const totalFlaconsSold = (orders || []).reduce((sum, o) => sum + (Number(o?.quantity) || 0), 0);
   const totalVaultStock = (products || []).reduce((sum, p) => sum + (Number(p?.stock) || 0), 0);
@@ -292,7 +268,6 @@ export default function AdminDashboard({}: AdminDashboardProps) {
   const filteredProducts = useMemo(() => {
     const q = (searchQuery || '').toLowerCase().trim();
     if (!Array.isArray(products)) return [];
-    if (!q) return products;
 
     return products.filter((p) => {
       if (!p) return false;
@@ -301,14 +276,20 @@ export default function AdminDashboard({}: AdminDashboardProps) {
       const brand = String(p.brand || '').toLowerCase();
       const category = String(p.category || '').toLowerCase();
 
-      return (
+      const matchSearch =
+        !q ||
         name.includes(q) ||
         number.includes(q) ||
         brand.includes(q) ||
-        category.includes(q)
-      );
+        category.includes(q);
+
+      const matchCategory =
+        productCategoryFilter.toLowerCase() === 'all' ||
+        category === productCategoryFilter.toLowerCase();
+
+      return matchSearch && matchCategory;
     });
-  }, [products, searchQuery]);
+  }, [products, searchQuery, productCategoryFilter]);
 
   return (
     <div className="min-h-screen bg-[#F5F3EE] text-[#292929] flex">
@@ -354,7 +335,6 @@ export default function AdminDashboard({}: AdminDashboardProps) {
                     setOrderFilter={setOrderFilter}
                     onCycleStatus={handleCycleStatus}
                     onSelectOrder={setSelectedOrder}
-                    onExportCSV={handleExportCSV}
                   />
                 </div>
               )}
@@ -362,6 +342,8 @@ export default function AdminDashboard({}: AdminDashboardProps) {
               {activeTab === 'products' && (
                 <ProductTable
                   products={filteredProducts}
+                  categoryFilter={productCategoryFilter}
+                  setCategoryFilter={setProductCategoryFilter}
                   onUpdateStock={handleUpdateStock}
                   onDeleteProduct={handleDeleteProduct}
                   onOpenAddProduct={() => setShowAddProductModal(true)}
@@ -375,7 +357,6 @@ export default function AdminDashboard({}: AdminDashboardProps) {
                   setOrderFilter={setOrderFilter}
                   onCycleStatus={handleCycleStatus}
                   onSelectOrder={setSelectedOrder}
-                  onExportCSV={handleExportCSV}
                 />
               )}
 
@@ -521,28 +502,6 @@ export default function AdminDashboard({}: AdminDashboardProps) {
                               </div>
                             </div>
                           )}
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="p-5 rounded-xl border border-[#E2DDD5] bg-white space-y-2">
-                              <div className="flex items-center gap-2 text-[#8F6F27]">
-                                <Shield className="w-4 h-4" />
-                                <h4 className="font-semibold text-sm text-[#292929]">Admin Role</h4>
-                              </div>
-                              <p className="text-xs text-[#77736B] leading-relaxed">
-                                Complete administrative control over inventory, orders, customer records, and user management.
-                              </p>
-                            </div>
-
-                            <div className="p-5 rounded-xl border border-[#E2DDD5] bg-white space-y-2">
-                              <div className="flex items-center gap-2 text-zinc-700">
-                                <Users className="w-4 h-4" />
-                                <h4 className="font-semibold text-sm text-[#292929]">Staff Role</h4>
-                              </div>
-                              <p className="text-xs text-[#77736B] leading-relaxed">
-                                Day-to-day operations: View catalog, update stock levels, and review customer orders. User Management is restricted.
-                              </p>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>

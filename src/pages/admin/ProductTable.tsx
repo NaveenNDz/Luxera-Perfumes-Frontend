@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Plus, Minus, Trash2 } from 'lucide-react';
 import type { Product } from '../../service/product';
 
@@ -6,6 +7,8 @@ const TD = 'px-4 py-3 text-sm text-[#292929] align-middle';
 
 interface ProductTableProps {
   products: Product[];
+  categoryFilter?: string;
+  setCategoryFilter?: (category: string) => void;
   onUpdateStock: (product: Product, delta: number) => void;
   onDeleteProduct?: (id: string) => void;
   onOpenAddProduct: () => void;
@@ -42,24 +45,66 @@ function StockBadge({ stock }: { stock: number }) {
 
 export default function ProductTable({
   products = [],
+  categoryFilter: propCategoryFilter,
+  setCategoryFilter: propSetCategoryFilter,
   onUpdateStock,
   onDeleteProduct,
   onOpenAddProduct,
 }: ProductTableProps) {
+  // Support both external state from parent and internal fallback state
+  const [internalCategory, setInternalCategory] = useState<string>('all');
+  const activeCategory = propCategoryFilter !== undefined ? propCategoryFilter : internalCategory;
+  const handleCategoryChange = propSetCategoryFilter || setInternalCategory;
+
+  const categories = ['all', 'Men', 'Women', 'Unisex'];
+
+  // Filter products if managed internally
+  const displayedProducts = propCategoryFilter !== undefined
+    ? products
+    : products.filter((p) => {
+        if (activeCategory.toLowerCase() === 'all') return true;
+        return String(p?.category || '').toLowerCase() === activeCategory.toLowerCase();
+      });
+
   return (
     <div className="rounded-xl border border-[#E2DDD5] bg-white shadow-sm overflow-hidden space-y-0">
-      <div className="p-4 flex items-center justify-between border-b border-[#E2DDD5]">
+      <div className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E2DDD5]">
         <div>
           <h3 className="font-semibold text-base text-[#292929]">Inventory & Atelier Catalog</h3>
           <p className="text-xs text-[#77736B] mt-0.5">Manage live stock levels and perfume registrations</p>
         </div>
-        <button
-          onClick={onOpenAddProduct}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C6A45A] hover:bg-[#B3934B] text-[#111114] text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          Add Item
-        </button>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Category Filter Pills: All, Men, Women, Unisex */}
+          <div className="flex rounded-lg border border-[#E2DDD5] p-0.5 bg-[#F5F3EE] text-xs">
+            {categories.map((cat) => {
+              const isSelected = activeCategory.toLowerCase() === cat.toLowerCase();
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => handleCategoryChange(cat)}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                    isSelected
+                      ? 'bg-white text-[#292929] shadow-xs'
+                      : 'text-[#77736B] hover:text-[#292929]'
+                  }`}
+                >
+                  {cat === 'all' ? 'All' : cat}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            onClick={onOpenAddProduct}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C6A45A] hover:bg-[#B3934B] text-[#111114] text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Add Item
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -75,8 +120,8 @@ export default function ProductTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-[#E2DDD5]">
-            {products && products.length > 0 ? (
-              products.map((p) => {
+            {displayedProducts && displayedProducts.length > 0 ? (
+              displayedProducts.map((p) => {
                 const prodId = String(p?._id || p?.id || p?.number || 'prod');
                 const price = Number(p?.price) || 0;
                 const stock = Number(p?.stock) || 0;
@@ -105,7 +150,7 @@ export default function ProductTable({
                       </div>
                     </td>
                     <td className={TD}>
-                      <p className="text-xs text-[#292929]">{p?.category || 'Unisex'}</p>
+                      <p className="text-xs font-medium text-[#292929]">{p?.category || 'Unisex'}</p>
                       <p className="text-[11px] text-[#77736B]">{p?.suitability || 'Both'}</p>
                     </td>
                     <td className={TD}>
@@ -157,7 +202,7 @@ export default function ProductTable({
             ) : (
               <tr>
                 <td colSpan={6} className="py-8 text-center text-xs text-[#77736B]">
-                  No products in inventory. Click "Add Item" to register a new fragrance.
+                  No perfumes found for {activeCategory === 'all' ? 'the selected filter' : activeCategory}.
                 </td>
               </tr>
             )}

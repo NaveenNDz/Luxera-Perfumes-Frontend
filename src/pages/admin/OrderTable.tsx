@@ -1,4 +1,4 @@
-import { Download, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import type { OrderItem } from '../../service/order';
 
 const TH = 'text-left px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wide text-[#77736B] bg-[#FAF8F5]';
@@ -10,7 +10,7 @@ interface OrderTableProps {
   setOrderFilter: (filter: string) => void;
   onCycleStatus?: (orderId: string) => void;
   onSelectOrder: (order: OrderItem) => void;
-  onExportCSV: () => void;
+  onExportCSV?: () => void;
 }
 
 function OrderStatusBadge({ status }: { status: string }) {
@@ -39,7 +39,6 @@ export default function OrderTable({
   setOrderFilter,
   onCycleStatus,
   onSelectOrder,
-  onExportCSV,
 }: OrderTableProps) {
   return (
     <div className="rounded-xl border border-[#E2DDD5] bg-white shadow-sm overflow-hidden space-y-0">
@@ -65,14 +64,6 @@ export default function OrderTable({
               </button>
             ))}
           </div>
-
-          <button
-            onClick={onExportCSV}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E2DDD5] bg-white text-xs text-[#292929] font-medium hover:border-[#C6A45A] transition-colors cursor-pointer"
-          >
-            <Download className="w-3.5 h-3.5 text-[#C6A45A]" />
-            CSV
-          </button>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Search, ShoppingBag, Heart, User as UserIcon } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, User as UserIcon } from 'lucide-react';
 
 interface CartHeaderProps {
   onBackToStorefront: () => void;
@@ -12,50 +12,48 @@ export default function CartHeader({
   itemCount,
 }: CartHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 w-full bg-white border-b border-neutral-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-8">
+    <header className="sticky top-0 z-40 w-full bg-[#08080c]/95 backdrop-blur-md border-b border-white/[0.08]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6">
           <button
+            type="button"
             onClick={onBackToStorefront}
-            className="font-serif text-2xl font-bold tracking-wider text-neutral-900 hover:text-black cursor-pointer"
+            className="flex flex-col leading-tight text-left group cursor-pointer"
           >
-            LUXERA
+            <span className="font-serif text-xl sm:text-2xl font-bold tracking-[0.25em] text-white group-hover:text-[#e2c785] transition-colors">
+              LUXERA
+            </span>
+            <span className="text-[9px] tracking-[0.2em] text-[#d4af37] uppercase font-semibold">
+              Fine Fragrance House
+            </span>
           </button>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-600">
-            <button onClick={onBackToStorefront} className="hover:text-black cursor-pointer">Collection</button>
-            <button onClick={onBackToStorefront} className="hover:text-black cursor-pointer">Women</button>
-            <button onClick={onBackToStorefront} className="hover:text-black cursor-pointer">Men</button>
-            <button onClick={onBackToStorefront} className="hover:text-black cursor-pointer">New In</button>
-            <button onClick={onBackToStorefront} className="hover:text-black cursor-pointer">Maison</button>
-          </nav>
+
+          <button
+            type="button"
+            onClick={onBackToStorefront}
+            className="hidden sm:inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer border-l border-white/10 pl-6 py-1"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>Continue Shopping</span>
+          </button>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="relative hidden sm:block w-48 lg:w-64">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full pl-3.5 pr-8 py-1.5 rounded-md bg-neutral-100 border border-transparent focus:border-neutral-300 focus:bg-white text-xs text-neutral-800 placeholder-neutral-400 outline-none"
-            />
-            <Search className="w-3.5 h-3.5 text-neutral-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 text-[#fef08a] text-xs font-semibold">
+            <ShoppingBag className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>
+              {itemCount} {itemCount === 1 ? 'Bottle' : 'Bottles'} in Cart
+            </span>
           </div>
 
-          <div className="flex items-center gap-3 text-neutral-700">
-            <button onClick={onBackToStorefront} className="relative p-1.5 hover:text-black cursor-pointer" title="Shopping Bag">
-              <ShoppingBag className="w-5 h-5 stroke-[1.75]" />
-              {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] px-1 rounded-full bg-black text-white text-[10px] font-semibold flex items-center justify-center">
-                  {itemCount}
-                </span>
-              )}
-            </button>
-            <button className="p-1.5 hover:text-black cursor-pointer" title="Wishlist">
-              <Heart className="w-5 h-5 stroke-[1.75]" />
-            </button>
-            <button onClick={() => onNavigateToAuth && onNavigateToAuth('signin')} className="p-1.5 hover:text-black cursor-pointer" title="Account">
-              <UserIcon className="w-5 h-5 stroke-[1.75]" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => onNavigateToAuth && onNavigateToAuth('signin')}
+            className="p-2 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+            title="My Account"
+          >
+            <UserIcon className="w-4 h-4 text-zinc-300" />
+          </button>
         </div>
       </div>
     </header>

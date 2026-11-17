@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import { getAllProducts, type Product } from '../../service/product';
 import type { CartItem } from '../../context/cartContext';
 import type { User } from '../../service/auth';
@@ -7,7 +8,6 @@ import HeroSection from './HeroSection';
 import PhilosophySection from './PhilosophySection';
 import CollectionSection from './CollectionSection';
 import WhyUsSection from './WhyUsSection';
-import ReviewsSection from './ReviewsSection';
 import ContactSection from './ContactSection';
 import Footer from './Footer';
 import ScentQuizModal from './ScentQuizModal';
@@ -28,6 +28,7 @@ export default function LandingPage({
   onNavigateToCart,
   onAddToCart,
   cart = [],
+  currentUser,
 }: LandingPageProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -89,6 +90,14 @@ export default function LandingPage({
   }, [products, searchQuery]);
 
   const handleAddToCart = (product: Product) => {
+    if (!currentUser) {
+      toast.error('Please sign in first to add perfumes to your cart.', {
+        duration: 3500,
+        icon: '🔒',
+      });
+      if (onNavigateToAuth) onNavigateToAuth('signin');
+      return;
+    }
     if (onAddToCart) onAddToCart(product);
   };
 
@@ -115,8 +124,6 @@ export default function LandingPage({
       />
 
       <WhyUsSection />
-
-      <ReviewsSection />
 
       <ContactSection />
 

@@ -41,6 +41,24 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             <span className="text-[#77736B]">Email:</span>
             <span className="text-[#292929] font-medium">{order.email}</span>
           </div>
+          {order.phone && (
+            <div className="flex justify-between border-b border-[#E2DDD5] pb-2">
+              <span className="text-[#77736B]">Contact Phone:</span>
+              <span className="text-[#292929] font-mono font-medium">{order.phone}</span>
+            </div>
+          )}
+          {order.address && (
+            <div className="flex justify-between border-b border-[#E2DDD5] pb-2">
+              <span className="text-[#77736B]">Delivery Address:</span>
+              <span className="text-[#292929] font-medium max-w-[14rem] text-right">{order.address}</span>
+            </div>
+          )}
+          {order.paymentMethod && (
+            <div className="flex justify-between border-b border-[#E2DDD5] pb-2">
+              <span className="text-[#77736B]">Payment Method:</span>
+              <span className="text-emerald-700 font-semibold">{order.paymentMethod}</span>
+            </div>
+          )}
           <div className="flex justify-between border-b border-[#E2DDD5] pb-2">
             <span className="text-[#77736B]">Ordered Items:</span>
             <span className="text-[#292929] font-medium max-w-[14rem] text-right">
@@ -52,7 +70,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             <span className="text-[#292929] font-medium">{order.quantity} pcs</span>
           </div>
           <div className="flex justify-between border-b border-[#E2DDD5] pb-2">
-            <span className="text-[#77736B]">Salon Hub:</span>
+            <span className="text-[#77736B]">Salon / Hub:</span>
             <span className="text-[#292929]">{order.salon}</span>
           </div>
           <div className="flex justify-between border-b border-[#E2DDD5] pb-2">
@@ -64,7 +82,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             <span className="text-[#292929] font-mono">{order.date}</span>
           </div>
           <div className="flex justify-between items-baseline pt-1">
-            <span className="text-sm font-semibold uppercase text-[#292929]">Total Paid:</span>
+            <span className="text-sm font-semibold uppercase text-[#292929]">Total Payable:</span>
             <span className="font-serif text-xl font-bold text-[#8F6F27]">
               Rs. {(Number(order.total) || 0).toLocaleString()}
             </span>

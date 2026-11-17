@@ -5,6 +5,9 @@ export interface OrderItem {
   id?: string;
   customer: string;
   email: string;
+  phone?: string;
+  address?: string;
+  paymentMethod?: string;
   salon: string;
   flacon: string;
   quantity: number;
@@ -28,6 +31,9 @@ export interface CustomerItem {
 export interface CreateOrderPayload {
   customer: string;
   email: string;
+  phone?: string;
+  address?: string;
+  paymentMethod?: string;
   salon: string;
   flacon: string;
   quantity: number;

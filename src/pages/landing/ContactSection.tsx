@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { MapPin, Phone, Mail, Clock, Check, MessageCircle, Send, Truck } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '94771234567';
+const WHATSAPP_NUMBER = '+94755201694';
 
 export default function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
@@ -64,19 +64,15 @@ export default function ContactSection() {
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#d4af37] shrink-0" />
-                <span>+94 77 123 4567</span>
+                <span>+94 75 520 1694</span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#d4af37] shrink-0" />
-                <span>hello@luxera.lk</span>
+                <span>naveendz2003@gmail.com</span>
               </div>
               <div className="flex items-center gap-3">
                 <Truck className="w-4 h-4 text-[#d4af37] shrink-0" />
                 <span>Island-Wide Cash on Delivery Available</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Clock className="w-4 h-4 text-[#d4af37] shrink-0" />
-                <span>Monday – Saturday: 9:00 AM – 8:00 PM</span>
               </div>
             </div>
           </div>

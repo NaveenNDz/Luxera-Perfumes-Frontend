@@ -8,6 +8,8 @@ import CartPage from './pages/cart/CartPage';
 import { useCart } from './context/cartContext';
 import { useAuth } from './context/authContext';
 import type { User as UserType } from './service/auth';
+import type { Product } from './service/product';
+import toast from 'react-hot-toast';
 
 function ProtectedAdmin({ children }: { children: ReactNode }) {
   const userStr = localStorage.getItem('user');
@@ -98,6 +100,18 @@ export default function App() {
     navigate('/auth');
   };
 
+  const handleAddToCartWithAuthCheck = (product: Product) => {
+    if (!currentUser) {
+      toast.error('Please sign in first to add perfumes to your cart.', {
+        duration: 3500,
+        icon: '🔒',
+      });
+      navigateToAuth('signin');
+      return;
+    }
+    addToCart(product);
+  };
+
   const handleToggleAdmin = () => {
     if (currentView === 'admin') {
       navigate('/');
@@ -112,7 +126,7 @@ export default function App() {
         currentView === 'admin'
           ? 'bg-[#F5F3EE]'
           : currentView === 'cart'
-          ? 'bg-[#f8f9fb]'
+          ? 'bg-[#08080c]'
           : 'bg-[#070709]'
       }`}
     >
@@ -122,7 +136,7 @@ export default function App() {
           element={
             <LandingPage
               cart={cart}
-              onAddToCart={addToCart}
+              onAddToCart={handleAddToCartWithAuthCheck}
               onNavigateToCart={() => navigate('/cart')}
               onEnterAdmin={() => navigate('/admin')}
               onNavigateToAuth={navigateToAuth}
@@ -135,7 +149,7 @@ export default function App() {
           element={
             <LandingPage
               cart={cart}
-              onAddToCart={addToCart}
+              onAddToCart={handleAddToCartWithAuthCheck}
               onNavigateToCart={() => navigate('/cart')}
               onEnterAdmin={() => navigate('/admin')}
               onNavigateToAuth={navigateToAuth}

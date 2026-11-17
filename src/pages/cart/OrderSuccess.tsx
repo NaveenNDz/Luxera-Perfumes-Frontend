@@ -1,4 +1,4 @@
-import { Check, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, ArrowLeft, Truck, Banknote, ShieldCheck } from 'lucide-react';
 
 interface OrderSuccessProps {
   itemCount: number;
@@ -12,40 +12,75 @@ export default function OrderSuccess({
   onContinueShopping,
 }: OrderSuccessProps) {
   return (
-    <div className="max-w-xl mx-auto rounded-2xl border border-neutral-200 bg-white p-8 sm:p-10 text-center space-y-6 shadow-sm">
-      <div className="w-16 h-16 mx-auto rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center">
-        <Check className="w-8 h-8 text-emerald-600 stroke-[2.5]" />
+    <div className="max-w-xl mx-auto rounded-2xl border border-white/15 bg-[#0c0c12] p-8 sm:p-10 text-center space-y-6 shadow-2xl text-white">
+      {/* Icon with Glowing Beacon */}
+      <div className="relative w-20 h-20 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_35px_rgba(16,185,129,0.25)]">
+        <CheckCircle2 className="w-10 h-10 stroke-[2]" />
       </div>
 
       <div className="space-y-1.5">
-        <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
-          Thank you for your order!
+        <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4af37] font-bold">
+          Order Confirmed
+        </span>
+        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          Thank You For Your Order
         </h2>
-        <p className="text-sm text-neutral-500">
-          Order Reference: <span className="text-neutral-900 font-mono font-semibold">#LX-2026-9042</span>
+        <p className="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
+          Your order has been recorded in the LUXERA system and scheduled for island-wide courier dispatch.
         </p>
       </div>
 
-      <div className="text-left rounded-xl border border-neutral-100 bg-neutral-50 p-5 space-y-3 text-sm">
-        <div className="flex justify-between items-center text-neutral-600">
-          <span>Items Ordered</span>
-          <span className="font-semibold text-neutral-900">{itemCount} item{itemCount !== 1 ? 's' : ''}</span>
+      {/* Order Summary Details Card */}
+      <div className="text-left rounded-xl border border-white/10 bg-white/[0.02] p-5 space-y-3.5 text-xs">
+        <div className="flex justify-between items-center text-zinc-400">
+          <span>Bottles Ordered</span>
+          <span className="font-semibold text-white">
+            {itemCount} {itemCount !== 1 ? 'Flacons' : 'Flacon'}
+          </span>
         </div>
-        <div className="flex justify-between items-center text-neutral-600">
-          <span>Delivery</span>
-          <span className="font-medium text-neutral-900">Express Courier</span>
+
+        <div className="flex justify-between items-center text-zinc-400">
+          <span>Payment Method</span>
+          <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
+            <Banknote className="w-3.5 h-3.5" />
+            <span>Cash on Delivery (COD)</span>
+          </span>
         </div>
-        <div className="flex justify-between items-center pt-3 border-t border-neutral-200">
-          <span className="font-bold text-neutral-900">Total</span>
-          <span className="font-bold text-lg text-neutral-900 font-mono">Rs. {(Number(total) || 0).toLocaleString()}</span>
+
+        <div className="flex justify-between items-center text-zinc-400">
+          <span>Island-Wide Delivery</span>
+          <span className="font-medium text-white flex items-center gap-1.5">
+            <Truck className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>1–3 Business Days</span>
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center pt-3.5 border-t border-white/10">
+          <div>
+            <span className="font-bold text-sm text-white block">Payable Total</span>
+            <span className="text-[10px] text-zinc-500">To be paid in cash to courier</span>
+          </div>
+          <span className="font-bold text-lg text-white">
+            Rs. {(Number(total) || 0).toLocaleString()}
+          </span>
         </div>
       </div>
 
+      {/* Courier Delivery Notice */}
+      <div className="p-3.5 rounded-xl border border-[#d4af37]/30 bg-[#d4af37]/10 text-xs text-[#fef08a] flex items-center gap-2.5 text-left">
+        <ShieldCheck className="w-5 h-5 text-[#d4af37] shrink-0" />
+        <span className="text-[11px] leading-relaxed">
+          Our dispatch team will inspect your sealed fragrance boxes with batch codes before handing them to the courier.
+        </span>
+      </div>
+
       <button
+        type="button"
         onClick={onContinueShopping}
-        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-black text-white hover:bg-neutral-800 text-sm font-medium transition-colors cursor-pointer"
+        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#d4af37] hover:bg-[#e0bf50] text-black text-xs font-bold uppercase tracking-wider transition-all shadow-[0_4px_20px_rgba(212,175,55,0.25)] hover:scale-[1.02] cursor-pointer"
       >
-        <ArrowLeft className="w-4 h-4" /> Continue Shopping
+        <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
+        <span>Return to Boutique</span>
       </button>
     </div>
   );

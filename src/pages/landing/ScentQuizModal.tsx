@@ -75,12 +75,12 @@ export default function ScentQuizModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       <div onClick={onClose} className="fixed inset-0 bg-black/85 backdrop-blur-md" />
 
-      <div className="relative w-full max-w-2xl bg-[#0c0c12] border border-white/15 rounded-2xl p-5 sm:p-7 shadow-2xl space-y-6 z-10 max-h-[92vh] overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-[#0c0c12] border border-[#d4af37]/40 rounded-2xl p-5 sm:p-7 shadow-[0_10px_50px_rgba(212,175,55,0.2)] space-y-6 z-10 max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2 text-[#d4af37]">
-            <Sparkles className="w-4 h-4 text-[#d4af37]" />
+            <Sparkles className="w-4 h-4 text-[#d4af37] animate-pulse" />
             <h3 className="font-serif text-lg sm:text-xl text-white font-bold tracking-wide">
-              {quizResults ? 'Your Curated Fragrance Matches' : 'Scent Quiz Finder'}
+              {quizResults ? 'Your Curated Fragrance Matches' : 'Bespoke Scent Finder Quiz'}
             </h3>
           </div>
           <button
@@ -93,9 +93,21 @@ export default function ScentQuizModal({
         </div>
 
         {isLoading ? (
-          <div className="py-16 text-center space-y-3">
-            <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs text-zinc-400 font-mono">Analyzing olfactory profile...</p>
+          <div className="py-20 text-center space-y-6">
+            <div className="relative w-16 h-16 mx-auto">
+              <span className="animate-ping absolute inset-0 rounded-full bg-[#d4af37]/30" />
+              <div className="w-16 h-16 rounded-full border-2 border-[#d4af37] border-t-transparent animate-spin flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-[#d4af37] animate-pulse" />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <p className="font-serif text-lg text-white font-bold">
+                Synthesizing Your Olfactory Profile
+              </p>
+              <p className="text-xs text-[#e2c785] font-mono animate-pulse">
+                Calibrating sillage & notes for tropical Sri Lankan climate...
+              </p>
+            </div>
           </div>
         ) : quizResults ? (
           <div className="space-y-6 py-1">
@@ -107,7 +119,7 @@ export default function ScentQuizModal({
                 Recommended For You
               </h4>
               <p className="text-xs text-zinc-400 max-w-md mx-auto">
-                Matched to your personal timing and lifestyle choices.
+                Matched to your personal timing, occasion, and projection requirements.
               </p>
             </div>
 
@@ -149,7 +161,7 @@ export default function ScentQuizModal({
                           <span className="text-[10px] text-zinc-400 font-mono uppercase">
                             {item.product.brand} · {item.product.concentration}
                           </span>
-                          <span className="font-serif text-base sm:text-lg font-bold text-white">
+                          <span className="text-base font-bold text-white">
                             Rs. {(Number(item.product.price) || 0).toLocaleString()}
                           </span>
                         </div>
@@ -182,12 +194,12 @@ export default function ScentQuizModal({
                           {isInCart ? (
                             <>
                               <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                              In Bag
+                              In Cart
                             </>
                           ) : (
                             <>
                               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                              Add to Bag (Rs. {(Number(item.product.price) || 0).toLocaleString()})
+                              Add to Cart (Rs. {(Number(item.product.price) || 0).toLocaleString()})
                             </>
                           )}
                         </button>

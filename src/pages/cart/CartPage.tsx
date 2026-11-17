@@ -7,6 +7,7 @@ import CartHeader from './CartHeader';
 import CartItemList from './CartItemList';
 import OrderSummary from './OrderSummary';
 import OrderSuccess from './OrderSuccess';
+import CheckoutModal from './CheckoutModal';
 
 export interface CartPageProps {
   cart?: CartItem[];
@@ -27,53 +28,34 @@ export default function CartPage({
   onNavigateToAuth,
   currentUser,
 }: CartPageProps) {
-  const [promoDiscount, setPromoDiscount] = useState(0);
-  const [promoApplied, setPromoApplied] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
   const deliveryFee = 500;
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const discountAmount = promoApplied ? Math.round(subtotal * promoDiscount) : 0;
-  const total = Math.max(0, subtotal + (subtotal > 0 ? deliveryFee : 0) - discountAmount);
-  const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0);
+  const total = subtotal > 0 ? subtotal + deliveryFee : 0;
+  const itemCount = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
 
-  const toggleFavorite = (id: string, name: string) => {
-    const nextState = !favorites[id];
-    setFavorites((prev) => ({ ...prev, [id]: nextState }));
-    if (nextState) toast.success(`Saved ${name} to wishlist`);
-  };
-
-  const handleApplyPromo = (code: string) => {
-    const upper = code.trim().toUpperCase();
-    if (['LUXERA', 'LUXERA10', 'VIP10', 'PROMO10'].includes(upper)) {
-      setPromoDiscount(0.1);
-      setPromoApplied(true);
-      return true;
-    }
-    return false;
-  };
-
-  const handleRemovePromo = () => {
-    setPromoApplied(false);
-    setPromoDiscount(0);
-  };
-
-  const handleCheckout = async () => {
+  // Called from CheckoutModal when confirmed
+  const handleCompleteOrder = async (formData: {
+    name: string;
+    phone: string;
+    address: string;
+    paymentType: 'cod' | 'card';
+  }) => {
     if (cart.length === 0) return;
+
+    if (formData.paymentType === 'card') {
+      toast.error('Currently unavailable. Only cash on delivery.');
+      return;
+    }
 
     setIsSubmitting(true);
 
     try {
-      const customerName = currentUser
-        ? `${currentUser.firstName} ${currentUser.lastName || ''}`.trim()
-        : 'Storefront Client';
-
-      const customerEmail = currentUser ? currentUser.email : 'client@luxera.lk';
-
       const flaconSummary = cart
-        .map((item) => `${item.name} (${item.volume}) x${item.quantity}`)
+        .map((item) => `${item.name} (${item.volume || '100ml'}) x${item.quantity}`)
         .join(', ');
 
       const formattedDate = new Date().toLocaleDateString('en-GB', {
@@ -83,9 +65,12 @@ export default function CartPage({
       });
 
       await placeOrder({
-        customer: customerName,
-        email: customerEmail,
-        salon: 'LUXERA Colombo Salon',
+        customer: formData.name,
+        email: currentUser?.email || `${formData.phone.replace(/\s+/g, '')}@luxera.lk`,
+        phone: formData.phone,
+        address: formData.address,
+        paymentMethod: 'Cash on delivery',
+        salon: `Island-wide COD (${formData.address})`,
         flacon: flaconSummary,
         quantity: itemCount,
         total: total,
@@ -93,12 +78,14 @@ export default function CartPage({
         date: formattedDate,
       });
 
+      setShowCheckoutModal(false);
       setOrderConfirmed(true);
       if (onClearCart) {
         onClearCart();
       }
-      toast.success('Your order has been placed successfully!');
+      toast.success('Your order has been placed! Our courier dispatch is in progress.');
     } catch (error: any) {
+      console.error('Checkout error:', error);
       const msg = error.response?.data?.message || 'Failed to place order. Please try again.';
       toast.error(msg);
     } finally {
@@ -112,7 +99,7 @@ export default function CartPage({
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#f8f9fb] text-neutral-900 font-sans flex flex-col justify-between">
+    <div className="min-h-screen w-full bg-[#08080c] text-zinc-100 font-sans flex flex-col justify-between selection:bg-[#d4af37]/30 selection:text-white">
       <div>
         <CartHeader
           onBackToStorefront={onBackToStorefront}
@@ -127,40 +114,48 @@ export default function CartPage({
               total={total}
               onContinueShopping={handleReturnToBoutique}
             />
+          ) : cart.length === 0 ? (
+            <CartItemList
+              cart={cart}
+              onUpdateQuantity={onUpdateQuantity}
+              onRemoveFromCart={onRemoveFromCart}
+              onBackToStorefront={onBackToStorefront}
+            />
           ) : (
-            <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_2px_20px_rgba(0,0,0,0.03)] border border-neutral-100/80">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-                <CartItemList
-                  cart={cart}
-                  favorites={favorites}
-                  onToggleFavorite={toggleFavorite}
-                  onUpdateQuantity={onUpdateQuantity}
-                  onRemoveFromCart={onRemoveFromCart}
-                  onBackToStorefront={onBackToStorefront}
-                />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+              <CartItemList
+                cart={cart}
+                onUpdateQuantity={onUpdateQuantity}
+                onRemoveFromCart={onRemoveFromCart}
+                onBackToStorefront={onBackToStorefront}
+              />
 
-                {cart.length > 0 && (
-                  <OrderSummary
-                    subtotal={subtotal}
-                    deliveryFee={deliveryFee}
-                    total={total}
-                    promoApplied={promoApplied}
-                    promoDiscount={promoDiscount}
-                    discountAmount={discountAmount}
-                    onApplyPromo={handleApplyPromo}
-                    onRemovePromo={handleRemovePromo}
-                    onCheckout={handleCheckout}
-                  />
-                )}
-              </div>
+              <OrderSummary
+                subtotal={subtotal}
+                deliveryFee={deliveryFee}
+                total={total}
+                onCheckout={() => setShowCheckoutModal(true)}
+              />
             </div>
           )}
         </main>
       </div>
 
-      <footer className="border-t border-neutral-200 py-6 text-center text-xs text-neutral-500">
-        © 2026 LUXERA Perfumes. All rights reserved.
+      <footer className="border-t border-white/10 py-6 text-center text-xs text-zinc-500">
+        © 2026 LUXERA Fine Fragrance House. All rights reserved.
       </footer>
+
+      {/* Checkout Modal Popup */}
+      <CheckoutModal
+        isOpen={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        cart={cart}
+        total={total}
+        deliveryFee={deliveryFee}
+        currentUser={currentUser}
+        onSubmitOrder={handleCompleteOrder}
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 }

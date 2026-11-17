@@ -78,8 +78,17 @@ export default function HeroSection({ onOpenQuiz }: HeroSectionProps) {
               <a href="#collection" className={BTN_GOLD}>
                 Shop Perfumes
               </a>
-              <button onClick={onOpenQuiz} className={BTN_OUTLINE}>
-                <Compass className="w-4 h-4 text-[#d4af37]" /> Scent Quiz Finder
+              <button
+                type="button"
+                onClick={onOpenQuiz}
+                className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-lg border border-[#d4af37]/60 hover:border-[#d4af37] text-white hover:text-[#fef08a] text-xs font-semibold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(212,175,55,0.18)] hover:shadow-[0_0_30px_rgba(212,175,55,0.35)] cursor-pointer bg-white/[0.04] backdrop-blur-sm overflow-hidden"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d4af37] opacity-80" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#d4af37]" />
+                </span>
+                <Compass className="w-4 h-4 text-[#d4af37] group-hover:rotate-45 transition-transform" />
+                <span>Scent Quiz Finder</span>
               </button>
             </div>
           </div>

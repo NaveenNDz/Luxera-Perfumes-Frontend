@@ -104,7 +104,7 @@ export default function SearchModal({
                         ? 'bg-emerald-950/70 border border-emerald-500/50 text-emerald-300'
                         : 'bg-[#d4af37] text-black hover:bg-[#e0bf50]'
                     }`}
-                    title={isInCart ? 'In Bag' : 'Add to Bag'}
+                    title={isInCart ? 'In Cart' : 'Add to Cart'}
                   >
                     {isInCart ? <Check className="w-4 h-4 stroke-[2.5]" /> : <Plus className="w-4 h-4 stroke-[2.5]" />}
                   </button>
