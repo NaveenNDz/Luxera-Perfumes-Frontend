@@ -1,71 +1,114 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
-
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from 'react';
+import type { Product } from '../service/product';
 
 export interface CartItem {
-  productId: string;
+  id: string;
+  number: string;
   name: string;
+  brand: string;
+  category: 'Men' | 'Women' | 'Unisex';
+  concentration: string;
   price: number;
+  volume: string;
+  batch: string;
   image: string;
   quantity: number;
 }
 
+interface CartContextType {
+  cart: CartItem[];
+  addToCart: (product: Product) => void;
+  updateQuantity: (productId: string, delta: number) => void;
+  removeFromCart: (productId: string) => void;
+  clearCart: () => void;
+  totalCartCount: number;
+  cartSubtotal: number;
+}
 
-export const CartContext = createContext<any>(null);
+export const CartContext = createContext<CartContextType>({
+  cart: [],
+  addToCart: () => {},
+  updateQuantity: () => {},
+  removeFromCart: () => {},
+  clearCart: () => {},
+  totalCartCount: 0,
+  cartSubtotal: 0,
+});
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(() => {
-    const savedCart = localStorage.getItem("luxera_cart");
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const saved = localStorage.getItem('luxera_cart') || localStorage.getItem('cart');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error('Error loading cart from storage:', error);
+    }
+    return [];
   });
 
   useEffect(() => {
-    localStorage.setItem("luxera_cart", JSON.stringify(cart));
+    localStorage.setItem('luxera_cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product: any) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.productId === product.productId
-      );
+  const addToCart = (product: Product) => {
+    const productId = product._id || product.id || product.number;
 
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.productId === product.productId
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === productId);
+
+      if (existing) {
+        return prev.map((item) =>
+          item.id === productId
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
 
-      return [
-        ...prevCart,
-        {
-          productId: product.productId,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: 1,
-        },
-      ];
+      const newItem: CartItem = {
+        id: productId,
+        number: product.number,
+        name: product.name,
+        brand: product.brand,
+        category: product.category,
+        concentration: product.concentration,
+        price: Number(product.price) || 0,
+        volume: product.volume,
+        batch: product.batch,
+        image: product.image,
+        quantity: 1,
+      };
+
+      return [...prev, newItem];
     });
   };
 
   const updateQuantity = (productId: string, delta: number) => {
-    setCart((prevCart) =>
-      prevCart
+    setCart((prev) =>
+      prev
         .map((item) => {
-          if (item.productId === productId) {
-            return { ...item, quantity: item.quantity + delta };
+          if (item.id === productId) {
+            const nextQty = item.quantity + delta;
+            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
           }
           return item;
         })
-        .filter((item) => item.quantity > 0)
+        .filter(Boolean) as CartItem[]
     );
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.productId !== productId)
-    );
+    setCart((prev) => prev.filter((item) => item.id !== productId));
   };
 
   const clearCart = () => {
@@ -73,7 +116,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  
   const cartSubtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -95,3 +137,5 @@ export function CartProvider({ children }: { children: ReactNode }) {
     </CartContext.Provider>
   );
 }
+
+export const useCart = () => useContext(CartContext);

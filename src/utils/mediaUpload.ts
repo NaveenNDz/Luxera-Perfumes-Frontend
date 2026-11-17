@@ -1,28 +1,25 @@
-import supabase from "../service/supabase";
+import supabase from '../service/supabase';
 
-export default function uploadMedia(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const timestamp = Date.now();
-    const cleanFileName = file.name.replace(/\s+/g, "_");
-    const fileName = `${timestamp}_${cleanFileName}`;
+export default async function uploadMedia(file: File): Promise<string> {
+  if (!file) {
+    throw new Error('No file selected!');
+  }
 
-    supabase.storage
-      .from("images")
-      .upload(fileName, file)
-      .then(({ error }) => {
-        if (error) {
-          reject(error);
-          return;
-        }
+  const timestamp = Date.now();
+  const cleanFileName = file.name.replace(/\s+/g, '_');
+  const fileName = `${timestamp}_${cleanFileName}`;
 
-        const { data } = supabase.storage
-          .from("images")
-          .getPublicUrl(fileName);
+  const { error } = await supabase.storage
+    .from('images')
+    .upload(fileName, file, { cacheControl: '3600' });
 
-        resolve(data.publicUrl);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+  if (error) {
+    throw error;
+  }
+
+  const { data } = supabase.storage
+    .from('images')
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
 }
