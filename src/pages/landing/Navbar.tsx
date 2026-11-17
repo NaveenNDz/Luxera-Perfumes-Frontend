@@ -51,7 +51,7 @@ export default function Navbar({
 
         <div className="flex items-center gap-2 sm:gap-3">
           <a
-            href="https://wa.me/94771234567"
+            href="https://wa.me/+94755201694"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition-colors text-[11px] font-medium"
@@ -130,7 +130,7 @@ export default function Navbar({
           <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#e2c785]">Contact</a>
 
           <a
-            href="https://wa.me/94771234567"
+            href="https://wa.me/+94755201694"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMobileMenuOpen(false)}

@@ -12,7 +12,7 @@ export default function ContactSection() {
     message: '',
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     setError('');
 
