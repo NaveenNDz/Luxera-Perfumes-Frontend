@@ -1,22 +1,22 @@
-import { useState, useEffect, useMemo } from 'react';
-import toast from 'react-hot-toast';
-import { getAllProducts, type Product } from '../../service/product';
-import type { CartItem } from '../../context/cartContext';
-import type { User } from '../../service/auth';
-import Navbar from './Navbar';
-import HeroSection from './HeroSection';
-import PhilosophySection from './PhilosophySection';
-import CollectionSection from './CollectionSection';
-import WhyUsSection from './WhyUsSection';
-import ContactSection from './ContactSection';
-import Footer from './Footer';
-import ScentQuizModal from './ScentQuizModal';
-import SearchModal from './SearchModal';
-import QuickViewModal from './QuickViewModal';
+import { useState, useEffect, useMemo } from "react";
+import toast from "react-hot-toast";
+import { getAllProducts, type Product } from "../../service/product";
+import type { CartItem } from "../../context/cartContext";
+import type { User } from "../../service/auth";
+import Navbar from "./Navbar";
+import HeroSection from "./HeroSection";
+import PhilosophySection from "./PhilosophySection";
+import CollectionSection from "./CollectionSection";
+import WhyUsSection from "./WhyUsSection";
+import ContactSection from "./ContactSection";
+import Footer from "./Footer";
+import ScentQuizModal from "./ScentQuizModal";
+import SearchModal from "./SearchModal";
+import QuickViewModal from "./QuickViewModal";
 
 export interface LandingPageProps {
   onEnterAdmin?: () => void;
-  onNavigateToAuth?: (mode?: 'signin' | 'signup') => void;
+  onNavigateToAuth?: (mode?: "signin" | "signup") => void;
   onNavigateToCart?: () => void;
   onAddToCart?: (product: Product) => void;
   cart?: CartItem[];
@@ -32,10 +32,12 @@ export default function LandingPage({
 }: LandingPageProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null,
+  );
   const [quizModalOpen, setQuizModalOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const totalItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -50,7 +52,7 @@ export default function LandingPage({
           setProducts(Array.isArray(data) ? data : []);
         }
       } catch (error) {
-        console.error('Failed to load products from API:', error);
+        console.error("Failed to load products from API:", error);
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -66,17 +68,17 @@ export default function LandingPage({
   }, []);
 
   const filteredProducts = useMemo(() => {
-    const q = (searchQuery || '').toLowerCase().trim();
+    const q = (searchQuery || "").toLowerCase().trim();
     if (!q) return products;
 
     return (products || []).filter((p) => {
       if (!p) return false;
-      const name = String(p.name || '').toLowerCase();
-      const brand = String(p.brand || '').toLowerCase();
-      const number = String(p.number || '').toLowerCase();
-      const category = String(p.category || '').toLowerCase();
-      const func = String(p.function || '').toLowerCase();
-      const desc = String(p.description || '').toLowerCase();
+      const name = String(p.name || "").toLowerCase();
+      const brand = String(p.brand || "").toLowerCase();
+      const number = String(p.number || "").toLowerCase();
+      const category = String(p.category || "").toLowerCase();
+      const func = String(p.function || "").toLowerCase();
+      const desc = String(p.description || "").toLowerCase();
 
       return (
         name.includes(q) ||
@@ -91,11 +93,11 @@ export default function LandingPage({
 
   const handleAddToCart = (product: Product) => {
     if (!currentUser) {
-      toast.error('Please sign in first to add perfumes to your cart.', {
+      toast.error("Please sign in first to add perfumes to your cart.", {
         duration: 3500,
-        icon: '🔒',
+        icon: "🔒",
       });
-      if (onNavigateToAuth) onNavigateToAuth('signin');
+      if (onNavigateToAuth) onNavigateToAuth("signin");
       return;
     }
     if (onAddToCart) onAddToCart(product);

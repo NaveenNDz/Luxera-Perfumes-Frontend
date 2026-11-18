@@ -65,17 +65,17 @@ export default function CheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-md" />
 
-      <div className="relative w-full max-w-lg bg-[#0c0c12] border border-white/15 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 z-10 max-h-[92vh] overflow-y-auto text-white">
-        {/* Header */}
-        <div className="flex items-start justify-between border-b border-white/10 pb-4">
+      <div className="relative w-full max-w-lg bg-[#0c0c12] border border-white/15 rounded-2xl p-5 sm:p-7 shadow-2xl space-y-5 sm:space-y-6 z-10 max-h-[92vh] overflow-y-auto text-white">
+       
+        <div className="flex items-start justify-between border-b border-white/10 pb-3.5 sm:pb-4">
           <div>
             <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4af37] font-semibold block">
               Island-Wide Courier Delivery
             </span>
-            <h3 className="font-serif text-2xl text-white font-bold mt-0.5">
+            <h3 className="font-serif text-xl sm:text-2xl text-white font-bold mt-0.5">
               Checkout & Delivery Details
             </h3>
           </div>
@@ -88,7 +88,7 @@ export default function CheckoutModal({
           </button>
         </div>
 
-        {/* Mini Order Summary */}
+        
         <div className="p-4 rounded-xl border border-white/10 bg-white/[0.02] flex items-center justify-between text-xs">
           <div>
             <span className="text-zinc-400 block">Total Fragrances</span>
@@ -112,9 +112,9 @@ export default function CheckoutModal({
           </div>
         </div>
 
-        {/* Checkout Form */}
+        
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Customer Name */}
+          
           <div>
             <label className="block text-xs font-semibold text-zinc-300 mb-1.5">
               Full Name <span className="text-[#d4af37]">*</span>
@@ -129,7 +129,7 @@ export default function CheckoutModal({
             />
           </div>
 
-          {/* Contact Phone */}
+          
           <div>
             <label className="block text-xs font-semibold text-zinc-300 mb-1.5">
               Contact Phone Number <span className="text-[#d4af37]">*</span>
@@ -147,7 +147,7 @@ export default function CheckoutModal({
             </span>
           </div>
 
-          {/* Delivery Address */}
+          
           <div>
             <label className="block text-xs font-semibold text-zinc-300 mb-1.5">
               Delivery Address (Sri Lanka) <span className="text-[#d4af37]">*</span>
@@ -162,7 +162,7 @@ export default function CheckoutModal({
             />
           </div>
 
-          {/* Payment Type Selection Dropdown */}
+          
           <div>
             <label className="block text-xs font-semibold text-zinc-300 mb-1.5">
               Payment Method <span className="text-[#d4af37]">*</span>
@@ -179,7 +179,7 @@ export default function CheckoutModal({
             </div>
           </div>
 
-          {/* Card Unavailable Alert Message */}
+        
           {paymentType === 'card' && (
             <div className="p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs flex items-start gap-2.5 animate-fadeIn">
               <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
@@ -194,7 +194,7 @@ export default function CheckoutModal({
             </div>
           )}
 
-          {/* COD Information Reassurance */}
+          
           {paymentType === 'cod' && (
             <div className="p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs flex items-center gap-2.5">
               <Banknote className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -204,7 +204,7 @@ export default function CheckoutModal({
             </div>
           )}
 
-          {/* Submit Actions */}
+          
           <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
             <button
               type="button"

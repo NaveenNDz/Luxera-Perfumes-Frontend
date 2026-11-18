@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { X, Sparkles, Plus, Check, RotateCcw, ArrowRight } from 'lucide-react';
+import { useState } from "react";
+import { X, Sparkles, Plus, Check, RotateCcw, ArrowRight } from "lucide-react";
 import {
   QUIZ_QUESTIONS,
   runScentQuiz,
   type Product,
-} from '../../service/product';
-import type { CartItem } from '../../context/cartContext';
-import toast from 'react-hot-toast';
+} from "../../service/product";
+import type { CartItem } from "../../context/cartContext";
+import toast from "react-hot-toast";
 
 interface ScentQuizModalProps {
   isOpen: boolean;
@@ -24,11 +24,14 @@ export default function ScentQuizModal({
   const [quizStep, setQuizStep] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [quizResults, setQuizResults] = useState<{
-    product: Product;
-    matchScore: number;
-    reason: string;
-  }[] | null>(null);
+  const [quizResults, setQuizResults] = useState<
+    | {
+        product: Product;
+        matchScore: number;
+        reason: string;
+      }[]
+    | null
+  >(null);
 
   if (!isOpen) return null;
 
@@ -52,7 +55,7 @@ export default function ScentQuizModal({
 
       setQuizResults(data.matches || []);
     } catch {
-      toast.error('Unable to fetch recommendations right now.');
+      toast.error("Unable to fetch recommendations right now.");
     } finally {
       setIsLoading(false);
     }
@@ -73,14 +76,19 @@ export default function ScentQuizModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div onClick={onClose} className="fixed inset-0 bg-black/85 backdrop-blur-md" />
+      <div
+        onClick={onClose}
+        className="fixed inset-0 bg-black/85 backdrop-blur-md"
+      />
 
       <div className="relative w-full max-w-2xl bg-[#0c0c12] border border-[#d4af37]/40 rounded-2xl p-5 sm:p-7 shadow-[0_10px_50px_rgba(212,175,55,0.2)] space-y-6 z-10 max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2 text-[#d4af37]">
             <Sparkles className="w-4 h-4 text-[#d4af37] animate-pulse" />
             <h3 className="font-serif text-lg sm:text-xl text-white font-bold tracking-wide">
-              {quizResults ? 'Your Curated Fragrance Matches' : 'Bespoke Scent Finder Quiz'}
+              {quizResults
+                ? "Your Curated Fragrance Matches"
+                : "Bespoke Scent Finder Quiz"}
             </h3>
           </div>
           <button
@@ -119,13 +127,15 @@ export default function ScentQuizModal({
                 Recommended For You
               </h4>
               <p className="text-xs text-zinc-400 max-w-md mx-auto">
-                Matched to your personal timing, occasion, and projection requirements.
+                Matched to your personal timing, occasion, and projection
+                requirements.
               </p>
             </div>
 
             <div className="space-y-4">
               {quizResults.map((item, idx) => {
-                const prodId = item.product._id || item.product.id || item.product.number;
+                const prodId =
+                  item.product._id || item.product.id || item.product.number;
                 const isInCart = isProductInCart(prodId);
                 const isTopPick = idx === 0;
 
@@ -134,8 +144,8 @@ export default function ScentQuizModal({
                     key={prodId || idx}
                     className={`rounded-xl p-4 sm:p-5 border transition-all flex flex-col sm:flex-row items-center sm:items-stretch gap-4 ${
                       isTopPick
-                        ? 'border-[#d4af37]/60 bg-gradient-to-r from-[#171510] to-[#0f0f14] shadow-[0_4px_25px_rgba(212,175,55,0.15)]'
-                        : 'border-white/10 bg-white/[0.02] hover:border-white/20'
+                        ? "border-[#d4af37]/60 bg-gradient-to-r from-[#171510] to-[#0f0f14] shadow-[0_4px_25px_rgba(212,175,55,0.15)]"
+                        : "border-white/10 bg-white/[0.02] hover:border-white/20"
                     }`}
                   >
                     <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-lg bg-black/60 p-2 shrink-0 border border-white/10 flex items-center justify-center">
@@ -147,8 +157,8 @@ export default function ScentQuizModal({
                       <span
                         className={`absolute -top-2 -left-2 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
                           isTopPick
-                            ? 'bg-[#d4af37] text-black shadow-md'
-                            : 'bg-white/10 text-[#e2c785] border border-white/20'
+                            ? "bg-[#d4af37] text-black shadow-md"
+                            : "bg-white/10 text-[#e2c785] border border-white/20"
                         }`}
                       >
                         #{idx + 1} · {item.matchScore}% Match
@@ -162,7 +172,8 @@ export default function ScentQuizModal({
                             {item.product.brand} · {item.product.concentration}
                           </span>
                           <span className="text-base font-bold text-white">
-                            Rs. {(Number(item.product.price) || 0).toLocaleString()}
+                            Rs.{" "}
+                            {(Number(item.product.price) || 0).toLocaleString()}
                           </span>
                         </div>
 
@@ -185,10 +196,10 @@ export default function ScentQuizModal({
                           onClick={() => onAddToCart(item.product)}
                           className={`w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all cursor-pointer ${
                             isInCart
-                              ? 'bg-emerald-950/70 border border-emerald-500/50 text-emerald-300'
+                              ? "bg-emerald-950/70 border border-emerald-500/50 text-emerald-300"
                               : isTopPick
-                              ? 'bg-[#d4af37] hover:bg-[#e0bf50] text-black shadow-[0_2px_12px_rgba(212,175,55,0.3)]'
-                              : 'bg-white/10 hover:bg-white/20 text-white'
+                                ? "bg-[#d4af37] hover:bg-[#e0bf50] text-black shadow-[0_2px_12px_rgba(212,175,55,0.3)]"
+                                : "bg-white/10 hover:bg-white/20 text-white"
                           }`}
                         >
                           {isInCart ? (
@@ -199,7 +210,11 @@ export default function ScentQuizModal({
                           ) : (
                             <>
                               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                              Add to Cart (Rs. {(Number(item.product.price) || 0).toLocaleString()})
+                              Add to Cart (Rs.{" "}
+                              {(
+                                Number(item.product.price) || 0
+                              ).toLocaleString()}
+                              )
                             </>
                           )}
                         </button>
@@ -236,13 +251,18 @@ export default function ScentQuizModal({
                 <span className="font-mono text-[#d4af37] font-semibold">
                   Step {quizStep + 1} of {QUIZ_QUESTIONS.length}
                 </span>
-                <span>{Math.round(((quizStep + 1) / QUIZ_QUESTIONS.length) * 100)}% Complete</span>
+                <span>
+                  {Math.round(((quizStep + 1) / QUIZ_QUESTIONS.length) * 100)}%
+                  Complete
+                </span>
               </div>
 
               <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-gradient-to-r from-[#d4af37] to-[#f3e5ab] transition-all duration-300"
-                  style={{ width: `${((quizStep + 1) / QUIZ_QUESTIONS.length) * 100}%` }}
+                  style={{
+                    width: `${((quizStep + 1) / QUIZ_QUESTIONS.length) * 100}%`,
+                  }}
                 />
               </div>
             </div>

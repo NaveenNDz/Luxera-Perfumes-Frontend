@@ -1,4 +1,4 @@
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu } from "lucide-react";
 
 interface AdminHeaderProps {
   searchQuery: string;
@@ -38,4 +38,3 @@ export default function AdminHeader({
     </header>
   );
 }
-

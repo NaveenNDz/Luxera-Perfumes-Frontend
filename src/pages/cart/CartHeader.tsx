@@ -39,10 +39,13 @@ export default function CartHeader({
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 text-[#fef08a] text-xs font-semibold">
-            <ShoppingBag className="w-3.5 h-3.5 text-[#d4af37]" />
-            <span>
+          <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 text-[#fef08a] text-xs font-semibold shrink-0">
+            <ShoppingBag className="w-3.5 h-3.5 text-[#d4af37] shrink-0" />
+            <span className="hidden sm:inline">
               {itemCount} {itemCount === 1 ? 'Bottle' : 'Bottles'} in Cart
+            </span>
+            <span className="sm:hidden font-mono">
+              {itemCount} {itemCount === 1 ? 'item' : 'items'}
             </span>
           </div>
 

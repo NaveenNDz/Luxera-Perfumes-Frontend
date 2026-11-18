@@ -1,6 +1,5 @@
-
-import { Plus, Check, Eye } from 'lucide-react';
-import type { Product } from '../../service/product';
+import { Plus, Check, Eye } from "lucide-react";
+import type { Product } from "../../service/product";
 
 interface ProductCardProps {
   product: Product;
@@ -63,11 +62,15 @@ export default function ProductCard({
 
       <div className="pt-4 mt-4 border-t border-white/[0.08] flex items-center justify-between">
         <div>
-          <span className="text-[10px] text-zinc-400 block font-medium">Price</span>
+          <span className="text-[10px] text-zinc-400 block font-medium">
+            Price
+          </span>
           <span className="text-base font-bold text-white tracking-tight">
             Rs. {(Number(product.price) || 0).toLocaleString()}
           </span>
-          <span className="text-[10px] text-zinc-500 block">{product.volume}</span>
+          <span className="text-[10px] text-zinc-500 block">
+            {product.volume}
+          </span>
         </div>
 
         <button
@@ -75,8 +78,8 @@ export default function ProductCard({
           onClick={() => onAddToCart(product)}
           className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-all cursor-pointer ${
             isInCart
-              ? 'bg-emerald-950/70 border border-emerald-500/50 text-emerald-300'
-              : 'bg-[#d4af37] hover:bg-[#e0bf50] text-black shadow-[0_4px_15px_rgba(212,175,55,0.25)] hover:scale-105'
+              ? "bg-emerald-950/70 border border-emerald-500/50 text-emerald-300"
+              : "bg-[#d4af37] hover:bg-[#e0bf50] text-black shadow-[0_4px_15px_rgba(212,175,55,0.25)] hover:scale-105"
           }`}
         >
           {isInCart ? (

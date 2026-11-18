@@ -8,32 +8,32 @@ export interface FragranceFamily {
 
 const FRAGRANCE_FAMILIES: FragranceFamily[] = [
   {
-    id: 'fam-01',
-    name: 'Warm Amber & Woods',
-    type: 'Evening & Night',
-    origin: 'Natural Resins & Balsams',
-    desc: 'Rich, comforting depth with intense projection and 12+ hour longevity on fabrics.',
+    id: "fam-01",
+    name: "Warm Amber & Woods",
+    type: "Evening & Night",
+    origin: "Natural Resins & Balsams",
+    desc: "Rich, comforting depth with intense projection and 12+ hour longevity on fabrics.",
   },
   {
-    id: 'fam-02',
-    name: 'Fresh Aquatic & Citrus',
-    type: 'Daytime & Office',
-    origin: 'Mediterranean Zests',
-    desc: 'Crisp bergamot and clean marine accords crafted to stay vibrant in warm climates.',
+    id: "fam-02",
+    name: "Fresh Aquatic & Citrus",
+    type: "Daytime & Office",
+    origin: "Mediterranean Zests",
+    desc: "Crisp bergamot and clean marine accords crafted to stay vibrant in warm climates.",
   },
   {
-    id: 'fam-03',
-    name: 'Sweet Gourmand',
-    type: 'Date & Parties',
-    origin: 'Vanilla Pods & Spices',
-    desc: 'Decadent vanilla, tonka bean, and warm spices creating an irresistible scent trail.',
+    id: "fam-03",
+    name: "Sweet Gourmand",
+    type: "Date & Parties",
+    origin: "Vanilla Pods & Spices",
+    desc: "Decadent vanilla, tonka bean, and warm spices creating an irresistible scent trail.",
   },
   {
-    id: 'fam-04',
-    name: 'Smoky Leather & Woods',
-    type: 'Signature Masculine',
-    origin: 'Aged Birch & Cedar',
-    desc: 'Commanding dry woods and birch smokiness that creates an authoritative presence.',
+    id: "fam-04",
+    name: "Smoky Leather & Woods",
+    type: "Signature Masculine",
+    origin: "Aged Birch & Cedar",
+    desc: "Commanding dry woods and birch smokiness that creates an authoritative presence.",
   },
 ];
 
@@ -62,9 +62,15 @@ export default function NotesShowcase() {
               <span className="text-[9px] uppercase tracking-wider text-[#d4af37] font-bold block">
                 {family.type}
               </span>
-              <h3 className="font-serif text-lg text-white font-bold">{family.name}</h3>
-              <p className="text-[11px] text-zinc-500 font-mono">Profile: {family.origin}</p>
-              <p className="text-xs text-zinc-400 leading-relaxed pt-1">{family.desc}</p>
+              <h3 className="font-serif text-lg text-white font-bold">
+                {family.name}
+              </h3>
+              <p className="text-[11px] text-zinc-500 font-mono">
+                Profile: {family.origin}
+              </p>
+              <p className="text-xs text-zinc-400 leading-relaxed pt-1">
+                {family.desc}
+              </p>
             </div>
           ))}
         </div>

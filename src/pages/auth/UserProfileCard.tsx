@@ -1,5 +1,5 @@
-import { CheckCircle2 } from 'lucide-react';
-import type { User as UserType } from '../../service/auth';
+import { CheckCircle2 } from "lucide-react";
+import type { User as UserType } from "../../service/auth";
 
 interface UserProfileCardProps {
   user: UserType;
@@ -14,14 +14,14 @@ export default function UserProfileCard({
   onSwitchToAdmin,
   onSignOut,
 }: UserProfileCardProps) {
-  const isAdmin = user.roles?.includes('ADMIN');
+  const isAdmin = user.roles?.includes("ADMIN");
 
   return (
     <div className="text-center py-8 space-y-5">
       <CheckCircle2 size={52} className="mx-auto text-[#D8B45A]" />
       <h2 className="font-serif text-3xl">Welcome Back</h2>
       <p className="text-white/60 text-sm font-medium">
-        {user.firstName} {user.lastName || ''}
+        {user.firstName} {user.lastName || ""}
       </p>
       <p className="text-white/40 text-xs font-mono">{user.email}</p>
 

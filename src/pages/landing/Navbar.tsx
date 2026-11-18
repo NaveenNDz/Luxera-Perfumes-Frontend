@@ -1,13 +1,22 @@
-import { useState } from 'react';
-import { ShoppingBag, Search, Menu, X, User as UserIcon, LogOut, LayoutDashboard, Sparkles } from 'lucide-react';
-import { useAuth } from '../../context/authContext';
+import { useState } from "react";
+import {
+  ShoppingBag,
+  Search,
+  Menu,
+  X,
+  User as UserIcon,
+  LogOut,
+  LayoutDashboard,
+  Sparkles,
+} from "lucide-react";
+import { useAuth } from "../../context/authContext";
 
 interface NavbarProps {
   onNavigateToCart?: () => void;
   onOpenSearch: () => void;
   onOpenQuiz?: () => void;
   totalItemsCount: number;
-  onNavigateToAuth?: (mode?: 'signin' | 'signup') => void;
+  onNavigateToAuth?: (mode?: "signin" | "signup") => void;
   onEnterAdmin?: () => void;
 }
 
@@ -23,17 +32,17 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isStaffOrAdmin = Boolean(
-    user?.roles?.some((r) => r === 'ADMIN' || r === 'STAFF')
+    user?.roles?.some((r) => r === "ADMIN" || r === "STAFF"),
   );
 
   const getDisplayName = () => {
-    if (!user) return '';
+    if (!user) return "";
     if (user.firstName) return user.firstName;
     if (user.email) {
-      const prefix = user.email.split('@')[0];
+      const prefix = user.email.split("@")[0];
       return prefix.charAt(0).toUpperCase() + prefix.slice(1);
     }
-    return 'Client';
+    return "Client";
   };
 
   return (
@@ -48,14 +57,26 @@ export default function Navbar({
           </span>
         </a>
 
-        {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-6 text-[11px] font-semibold tracking-[0.16em] uppercase text-zinc-300">
-          <a href="#collection" className="hover:text-[#e2c785] transition-colors">Perfumes</a>
-          <a href="#philosophy" className="hover:text-[#e2c785] transition-colors">Philosophy</a>
-          <a href="#why-us" className="hover:text-[#e2c785] transition-colors">Why Us</a>
-          <a href="#contact" className="hover:text-[#e2c785] transition-colors">Contact</a>
+          <a
+            href="#collection"
+            className="hover:text-[#e2c785] transition-colors"
+          >
+            Perfumes
+          </a>
+          <a
+            href="#philosophy"
+            className="hover:text-[#e2c785] transition-colors"
+          >
+            Philosophy
+          </a>
+          <a href="#why-us" className="hover:text-[#e2c785] transition-colors">
+            Why Us
+          </a>
+          <a href="#contact" className="hover:text-[#e2c785] transition-colors">
+            Contact
+          </a>
 
-          {/* Highlighted Scent Finder Quiz Button in Navbar */}
           {onOpenQuiz && (
             <button
               type="button"
@@ -131,7 +152,7 @@ export default function Navbar({
               </div>
             ) : (
               <button
-                onClick={() => onNavigateToAuth && onNavigateToAuth('signin')}
+                onClick={() => onNavigateToAuth && onNavigateToAuth("signin")}
                 className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-zinc-300 hover:text-[#d4af37] transition-colors cursor-pointer py-1 px-1.5 font-medium"
                 title="Sign In"
               >
@@ -146,19 +167,46 @@ export default function Navbar({
             className="lg:hidden p-2 text-zinc-400 hover:text-white cursor-pointer"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>
 
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#0c0c11] border-b border-white/10 px-6 py-5 space-y-3.5 text-[11px] uppercase tracking-widest text-zinc-300">
-          <a href="#collection" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#e2c785]">Perfumes</a>
-          <a href="#philosophy" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#e2c785]">Philosophy</a>
-          <a href="#why-us" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#e2c785]">Why Us</a>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-1 hover:text-[#e2c785]">Contact</a>
+          <a
+            href="#collection"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-1 hover:text-[#e2c785]"
+          >
+            Perfumes
+          </a>
+          <a
+            href="#philosophy"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-1 hover:text-[#e2c785]"
+          >
+            Philosophy
+          </a>
+          <a
+            href="#why-us"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-1 hover:text-[#e2c785]"
+          >
+            Why Us
+          </a>
+          <a
+            href="#contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-1 hover:text-[#e2c785]"
+          >
+            Contact
+          </a>
 
-          {/* Highlighted Scent Finder in Mobile Menu */}
           {onOpenQuiz && (
             <button
               type="button"
@@ -174,7 +222,9 @@ export default function Navbar({
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[#d4af37]" />
                 </span>
                 <Sparkles className="w-4 h-4 text-[#d4af37]" />
-                <span className="font-serif tracking-widest uppercase text-xs text-white">Scent Finder Quiz</span>
+                <span className="font-serif tracking-widest uppercase text-xs text-white">
+                  Scent Finder Quiz
+                </span>
               </div>
               <span className="text-[10px] bg-[#d4af37] text-black font-bold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono">
                 Match Scent
@@ -186,7 +236,9 @@ export default function Navbar({
             {user ? (
               <>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#e2c785]">Hi, {getDisplayName()}</span>
+                  <span className="text-xs text-[#e2c785]">
+                    Hi, {getDisplayName()}
+                  </span>
                   <button
                     onClick={() => {
                       signOut();
@@ -214,7 +266,7 @@ export default function Navbar({
             ) : (
               <button
                 onClick={() => {
-                  if (onNavigateToAuth) onNavigateToAuth('signin');
+                  if (onNavigateToAuth) onNavigateToAuth("signin");
                   setMobileMenuOpen(false);
                 }}
                 className="flex items-center gap-1.5 text-xs text-[#e2c785]"

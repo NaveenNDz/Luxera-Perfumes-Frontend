@@ -1,7 +1,14 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { X, UserPlus, Mail, Lock, User as UserIcon, Shield } from 'lucide-react';
-import { registerUser } from '../../service/auth';
-import toast from 'react-hot-toast';
+import { useState, type FormEvent, type ChangeEvent } from "react";
+import {
+  X,
+  UserPlus,
+  Mail,
+  Lock,
+  User as UserIcon,
+  Shield,
+} from "lucide-react";
+import { registerUser } from "../../service/auth";
+import toast from "react-hot-toast";
 
 interface RegisterUserModalProps {
   isOpen: boolean;
@@ -15,18 +22,20 @@ export default function RegisterUserModal({
   onSuccess,
 }: RegisterUserModalProps) {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    role: 'STAFF' as 'ADMIN' | 'STAFF',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "STAFF" as "ADMIN" | "STAFF",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -37,17 +46,17 @@ export default function RegisterUserModal({
     e.preventDefault();
 
     if (!formData.firstName.trim() || !formData.lastName.trim()) {
-      toast.error('First and last names are required');
+      toast.error("First and last names are required");
       return;
     }
 
     if (!formData.email.trim() || !formData.password) {
-      toast.error('Email and password are required');
+      toast.error("Email and password are required");
       return;
     }
 
     if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      toast.error("Password must be at least 6 characters");
       return;
     }
 
@@ -64,16 +73,16 @@ export default function RegisterUserModal({
 
       toast.success(response.message || `Registered as ${formData.role}`);
       setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        role: 'STAFF',
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        role: "STAFF",
       });
       if (onSuccess) onSuccess();
       onClose();
     } catch (error: any) {
-      const msg = error.response?.data?.message || 'Failed to register user';
+      const msg = error.response?.data?.message || "Failed to register user";
       toast.error(msg);
     } finally {
       setIsSubmitting(false);
@@ -82,7 +91,10 @@ export default function RegisterUserModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 text-black">
-      <div onClick={onClose} className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+      <div
+        onClick={onClose}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+      />
       <div className="relative w-full max-w-md bg-white border border-[#E2DDD5] rounded-2xl p-7 shadow-2xl z-10 space-y-5">
         <div className="flex items-center justify-between border-b border-[#E2DDD5] pb-4">
           <div className="flex items-center gap-2.5">
@@ -90,8 +102,12 @@ export default function RegisterUserModal({
               <UserPlus className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-serif font-bold text-[#292929]">Register User</h3>
-              <p className="text-xs text-[#77736B]">Add Admin or Staff account</p>
+              <h3 className="text-lg font-serif font-bold text-[#292929]">
+                Register User
+              </h3>
+              <p className="text-xs text-[#77736B]">
+                Add Admin or Staff account
+              </p>
             </div>
           </div>
           <button
@@ -105,7 +121,9 @@ export default function RegisterUserModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">First Name</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                First Name
+              </label>
               <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus-within:border-black">
                 <UserIcon size={14} className="text-gray-400 shrink-0" />
                 <input
@@ -121,7 +139,9 @@ export default function RegisterUserModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">Last Name</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Last Name
+              </label>
               <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus-within:border-black">
                 <UserIcon size={14} className="text-gray-400 shrink-0" />
                 <input
@@ -138,7 +158,9 @@ export default function RegisterUserModal({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
+            <label className="block text-xs font-semibold text-gray-700 mb-1">
+              Email Address
+            </label>
             <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus-within:border-black">
               <Mail size={14} className="text-gray-400 shrink-0" />
               <input
@@ -154,7 +176,9 @@ export default function RegisterUserModal({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+            <label className="block text-xs font-semibold text-gray-700 mb-1">
+              Password
+            </label>
             <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus-within:border-black">
               <Lock size={14} className="text-gray-400 shrink-0" />
               <input
@@ -170,7 +194,9 @@ export default function RegisterUserModal({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">System Role</label>
+            <label className="block text-xs font-semibold text-gray-700 mb-1">
+              System Role
+            </label>
             <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus-within:border-black">
               <Shield size={14} className="text-gray-400 shrink-0" />
               <select
@@ -199,7 +225,7 @@ export default function RegisterUserModal({
               disabled={isSubmitting}
               className="px-4 py-2 rounded-lg bg-black hover:bg-neutral-800 text-white text-xs font-semibold uppercase tracking-wider cursor-pointer disabled:opacity-50"
             >
-              {isSubmitting ? 'Registering...' : 'Register User'}
+              {isSubmitting ? "Registering..." : "Register User"}
             </button>
           </div>
         </form>
@@ -207,4 +233,3 @@ export default function RegisterUserModal({
     </div>
   );
 }
-

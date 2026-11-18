@@ -28,6 +28,14 @@ export interface CustomerItem {
   lastDate: string;
 }
 
+export interface OrderProductItem {
+  name: string;
+  brand?: string;
+  volume?: string;
+  quantity: number;
+  price: number;
+}
+
 export interface CreateOrderPayload {
   customer: string;
   email: string;
@@ -36,6 +44,7 @@ export interface CreateOrderPayload {
   paymentMethod?: string;
   salon: string;
   flacon: string;
+  items?: OrderProductItem[];
   quantity: number;
   total: number;
   status?: string;
@@ -45,6 +54,8 @@ export interface CreateOrderPayload {
 export interface CreateOrderResponse {
   success: boolean;
   data: OrderItem;
+  emailSent?: boolean;
+  emailPreview?: string;
 }
 
 export const getAllOrders = async (): Promise<OrderItem[]> => {

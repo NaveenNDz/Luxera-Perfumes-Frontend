@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
-import type { Product } from '../../service/product';
-import type { CartItem } from '../../context/cartContext';
-import ProductCard from './ProductCard';
+import { useState, useMemo } from "react";
+import type { Product } from "../../service/product";
+import type { CartItem } from "../../context/cartContext";
+import ProductCard from "./ProductCard";
 
 interface CollectionSectionProps {
   products: Product[];
@@ -11,7 +11,7 @@ interface CollectionSectionProps {
   onOpenQuickView: (product: Product) => void;
 }
 
-const CATEGORIES = ['All', 'Men', 'Women', 'Unisex'] as const;
+const CATEGORIES = ["All", "Men", "Women", "Unisex"] as const;
 
 export default function CollectionSection({
   products,
@@ -20,7 +20,8 @@ export default function CollectionSection({
   onAddToCart,
   onOpenQuickView,
 }: CollectionSectionProps) {
-  const [selectedCategory, setSelectedCategory] = useState<(typeof CATEGORIES)[number]>('All');
+  const [selectedCategory, setSelectedCategory] =
+    useState<(typeof CATEGORIES)[number]>("All");
 
   const isProductInCart = (p: Product) => {
     const prodId = p._id || p.id || p.number;
@@ -28,12 +29,15 @@ export default function CollectionSection({
   };
 
   const filteredProducts = useMemo(() => {
-    if (selectedCategory === 'All') return products;
+    if (selectedCategory === "All") return products;
     return products.filter((p) => p.category === selectedCategory);
   }, [products, selectedCategory]);
 
   return (
-    <section id="collection" className="w-full py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6">
+    <section
+      id="collection"
+      className="w-full py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6"
+    >
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-4 border-b border-white/[0.08]">
         <div>
           <span className="text-[10px] uppercase font-mono tracking-[0.25em] text-[#d4af37] font-semibold">
@@ -58,11 +62,11 @@ export default function CollectionSection({
               onClick={() => setSelectedCategory(cat)}
               className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all cursor-pointer ${
                 active
-                  ? 'bg-[#d4af37] text-black shadow-[0_2px_12px_rgba(212,175,55,0.35)]'
-                  : 'bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] border border-white/10'
+                  ? "bg-[#d4af37] text-black shadow-[0_2px_12px_rgba(212,175,55,0.35)]"
+                  : "bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] border border-white/10"
               }`}
             >
-              {cat === 'All' ? 'All Perfumes' : cat}
+              {cat === "All" ? "All Perfumes" : cat}
             </button>
           );
         })}
@@ -71,7 +75,9 @@ export default function CollectionSection({
       {isLoading ? (
         <div className="py-20 text-center space-y-3">
           <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs text-zinc-400 font-mono">Loading curated collection...</p>
+          <p className="text-xs text-zinc-400 font-mono">
+            Loading curated collection...
+          </p>
         </div>
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">

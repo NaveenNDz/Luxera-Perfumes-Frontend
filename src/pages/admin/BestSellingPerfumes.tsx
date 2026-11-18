@@ -1,27 +1,37 @@
-import { useMemo } from 'react';
-import { Flame, Sparkles, Package } from 'lucide-react';
-import type { Product } from '../../service/product';
-import type { OrderItem } from '../../service/order';
+import { useMemo } from "react";
+import { Flame, Sparkles, Package } from "lucide-react";
+import type { Product } from "../../service/product";
+import type { OrderItem } from "../../service/order";
 
 interface BestSellingPerfumesProps {
   products: Product[];
   orders: OrderItem[];
 }
 
-export default function BestSellingPerfumes({ products = [], orders = [] }: BestSellingPerfumesProps) {
-  // Compute top selling perfumes based on orders count or catalog popularity
+export default function BestSellingPerfumes({
+  products = [],
+  orders = [],
+}: BestSellingPerfumesProps) {
   const bestSellers = useMemo(() => {
     if (!products || products.length === 0) return [];
 
     const scored = products.map((product) => {
-      const prodName = String(product?.name || '').toLowerCase().trim();
-      const prodBrand = String(product?.brand || '').toLowerCase().trim();
+      const prodName = String(product?.name || "")
+        .toLowerCase()
+        .trim();
+      const prodBrand = String(product?.brand || "")
+        .toLowerCase()
+        .trim();
 
-      // Count units sold in confirmed/completed orders
-      const orderCount = orders.filter((o) => {
-        const flacon = String(o?.flacon || '').toLowerCase();
-        return flacon.includes(prodName) || (prodBrand && flacon.includes(prodBrand));
-      }).reduce((sum, o) => sum + (Number(o?.quantity) || 1), 0);
+      const orderCount = orders
+        .filter((o) => {
+          const flacon = String(o?.flacon || "").toLowerCase();
+          return (
+            flacon.includes(prodName) ||
+            (prodBrand && flacon.includes(prodBrand))
+          );
+        })
+        .reduce((sum, o) => sum + (Number(o?.quantity) || 1), 0);
 
       return {
         product,
@@ -29,7 +39,6 @@ export default function BestSellingPerfumes({ products = [], orders = [] }: Best
       };
     });
 
-    // Sort by order count descending, then by stock
     scored.sort((a, b) => {
       if (b.orderCount !== a.orderCount) {
         return b.orderCount - a.orderCount;
@@ -40,12 +49,11 @@ export default function BestSellingPerfumes({ products = [], orders = [] }: Best
     return scored.slice(0, 4);
   }, [products, orders]);
 
-  // Sri Lankan regional badges for perfume popularity
   const regionalBadges = [
-    '🔥 Colombo #1 Best Seller',
-    '⭐ Island-wide Favorite',
-    '✨ Trending Night Sillage',
-    '💎 Luxury Signature Scent',
+    "🔥 Colombo #1 Best Seller",
+    "⭐ Island-wide Favorite",
+    "✨ Trending Night Sillage",
+    "💎 Luxury Signature Scent",
   ];
 
   return (
@@ -61,7 +69,8 @@ export default function BestSellingPerfumes({ products = [], orders = [] }: Best
             </h3>
           </div>
           <p className="text-xs text-[#77736B] mt-1">
-            Top performing fragrances across Sri Lanka boutique dispatches & online orders
+            Top performing fragrances across Sri Lanka boutique dispatches &
+            online orders
           </p>
         </div>
         <span className="text-xs font-mono font-semibold px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E2DDD5] text-[#8F6F27] self-start sm:self-auto">
@@ -84,7 +93,6 @@ export default function BestSellingPerfumes({ products = [], orders = [] }: Best
                 className="rounded-xl border border-[#E2DDD5] bg-[#FAF8F5]/60 hover:bg-white hover:border-[#C6A45A]/50 transition-all p-4 flex flex-col justify-between space-y-3 shadow-xs group"
               >
                 <div className="space-y-2.5">
-                  {/* Badge */}
                   <div className="flex items-center justify-between">
                     <span className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#C6A45A]/15 text-[#8F6F27]">
                       {badgeText}
@@ -94,7 +102,6 @@ export default function BestSellingPerfumes({ products = [], orders = [] }: Best
                     </span>
                   </div>
 
-                  {/* Image & Title */}
                   <div className="flex items-center gap-3 pt-1">
                     <div className="w-14 h-14 rounded-lg bg-white border border-[#E2DDD5] overflow-hidden shrink-0 flex items-center justify-center p-1 group-hover:scale-105 transition-transform">
                       {product.image ? (
@@ -115,40 +122,45 @@ export default function BestSellingPerfumes({ products = [], orders = [] }: Best
                         {product.name}
                       </h4>
                       <span className="text-[11px] text-[#77736B] block">
-                        {product.category} • {product.volume || '100ml'}
+                        {product.category} • {product.volume || "100ml"}
                       </span>
                     </div>
                   </div>
 
                   <div className="text-[11px] text-[#77736B] flex items-center gap-1.5 pt-1">
                     <span>Occasion:</span>
-                    <span className="font-medium text-[#292929]">{product.function || 'All Functions'}</span>
+                    <span className="font-medium text-[#292929]">
+                      {product.function || "All Functions"}
+                    </span>
                   </div>
                 </div>
 
-                {/* Bottom Stats */}
                 <div className="pt-2 border-t border-[#E2DDD5] flex items-center justify-between text-xs">
                   <div>
-                    <span className="text-[10px] text-[#77736B] block">Price (LKR)</span>
+                    <span className="text-[10px] text-[#77736B] block">
+                      Price (LKR)
+                    </span>
                     <span className="font-serif font-bold text-sm text-[#8F6F27]">
                       Rs. {priceNumber.toLocaleString()}
                     </span>
                   </div>
 
-                    <div className="text-right">
+                  <div className="text-right">
                     <span className="text-[10px] text-[#77736B] block">
-                      {orderCount > 0 ? `${orderCount} Dispatched` : 'Vault Inventory'}
+                      {orderCount > 0
+                        ? `${orderCount} Dispatched`
+                        : "Vault Inventory"}
                     </span>
                     <span
                       className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                         isOutOfStock
-                          ? 'bg-red-100 text-red-700'
+                          ? "bg-red-100 text-red-700"
                           : isLowStock
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-emerald-100 text-emerald-800'
+                            ? "bg-amber-100 text-amber-800"
+                            : "bg-emerald-100 text-emerald-800"
                       }`}
                     >
-                      {isOutOfStock ? 'Sold Out' : `In Stock (${stockCount})`}
+                      {isOutOfStock ? "Sold Out" : `In Stock (${stockCount})`}
                     </span>
                   </div>
                 </div>

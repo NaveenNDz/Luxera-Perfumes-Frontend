@@ -7,8 +7,8 @@ import {
   Lock,
   LogOut,
   X,
-} from 'lucide-react';
-import type { AdminTab } from './AdminDashboard';
+} from "lucide-react";
+import type { AdminTab } from "./AdminDashboard";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -29,11 +29,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'products', label: 'Inventory', icon: Package },
-  { id: 'orders', label: 'Orders', icon: ShoppingBag },
-  { id: 'clients', label: 'Customers', icon: Users },
-  { id: 'settings', label: 'Settings', icon: Settings, adminOnly: true },
+  { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "products", label: "Inventory", icon: Package },
+  { id: "orders", label: "Orders", icon: ShoppingBag },
+  { id: "clients", label: "Customers", icon: Users },
+  { id: "settings", label: "Settings", icon: Settings, adminOnly: true },
 ];
 
 export default function AdminSidebar({
@@ -64,7 +64,7 @@ export default function AdminSidebar({
             LUXERA
           </span>
           <span className="text-[9px] tracking-[0.2em] text-zinc-400 uppercase">
-            {isAdmin ? 'Administrator Portal' : 'Staff Workspace'}
+            {isAdmin ? "Administrator Portal" : "Staff Workspace"}
           </span>
         </div>
         <button
@@ -88,16 +88,20 @@ export default function AdminSidebar({
               onClick={() => handleNavClick(item)}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs tracking-wider transition-colors cursor-pointer ${
                 active
-                  ? 'bg-[#C6A45A]/15 text-[#C6A45A] font-semibold border border-[#C6A45A]/30'
+                  ? "bg-[#C6A45A]/15 text-[#C6A45A] font-semibold border border-[#C6A45A]/30"
                   : isRestricted
-                  ? 'text-zinc-500 hover:text-zinc-400 hover:bg-white/[0.02]'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                    ? "text-zinc-500 hover:text-zinc-400 hover:bg-white/[0.02]"
+                    : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
               }`}
             >
               <div className="flex items-center gap-3">
                 <Icon
                   className={`w-4 h-4 ${
-                    active ? 'text-[#C6A45A]' : isRestricted ? 'text-zinc-600' : 'text-zinc-400'
+                    active
+                      ? "text-[#C6A45A]"
+                      : isRestricted
+                        ? "text-zinc-600"
+                        : "text-zinc-400"
                   }`}
                 />
                 <span>{item.label}</span>
@@ -109,7 +113,7 @@ export default function AdminSidebar({
                     <Lock className="w-3.5 h-3.5 text-zinc-600" />
                   </span>
                 )}
-                {item.id === 'orders' && pendingOrdersCount > 0 && (
+                {item.id === "orders" && pendingOrdersCount > 0 && (
                   <span className="px-1.5 py-0.5 rounded-full bg-[#C6A45A] text-black text-[10px] font-bold">
                     {pendingOrdersCount}
                   </span>
@@ -141,10 +145,11 @@ export default function AdminSidebar({
 
       {mobileSidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div onClick={() => setMobileSidebarOpen(false)} className="fixed inset-0 bg-black/60" />
-          <div className="relative w-72 max-w-full h-full z-10">
-            {content}
-          </div>
+          <div
+            onClick={() => setMobileSidebarOpen(false)}
+            className="fixed inset-0 bg-black/60"
+          />
+          <div className="relative w-72 max-w-full h-full z-10">{content}</div>
         </div>
       )}
     </>

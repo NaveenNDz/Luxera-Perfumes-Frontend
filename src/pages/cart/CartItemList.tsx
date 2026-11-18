@@ -68,7 +68,7 @@ export default function CartItemList({
               key={item.id}
               className="py-5 first:pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group"
             >
-              {/* Product Thumbnail & Details */}
+             
               <div className="flex items-center gap-4 min-w-0">
                 <div className="w-20 h-24 sm:w-22 sm:h-26 rounded-xl overflow-hidden bg-black/60 border border-white/10 shrink-0 flex items-center justify-center p-2 group-hover:border-[#d4af37]/40 transition-colors">
                   <img
@@ -94,14 +94,14 @@ export default function CartItemList({
                 </div>
               </div>
 
-              {/* Quantity Controls & Line Total */}
+              
               <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t border-white/5 sm:border-0">
                 <span className="font-bold text-base text-white">
                   Rs. {lineTotal.toLocaleString()}
                 </span>
 
                 <div className="flex items-center gap-3">
-                  {/* Plus / Minus quantity pill */}
+                  
                   <div className="flex items-center border border-white/15 rounded-lg bg-black/40 px-1 py-0.5">
                     <button
                       type="button"
@@ -124,7 +124,7 @@ export default function CartItemList({
                     </button>
                   </div>
 
-                  {/* Remove Item Button */}
+                  
                   <button
                     type="button"
                     onClick={() => onRemoveFromCart && onRemoveFromCart(item.id)}

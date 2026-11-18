@@ -31,13 +31,17 @@ export default function CartPage({
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [confirmedEmail, setConfirmedEmail] = useState('');
+  const [confirmedAddress, setConfirmedAddress] = useState('');
+  const [confirmedTotal, setConfirmedTotal] = useState(0);
+  const [confirmedItemCount, setConfirmedItemCount] = useState(0);
 
   const deliveryFee = 500;
   const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0);
   const total = subtotal > 0 ? subtotal + deliveryFee : 0;
   const itemCount = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
 
-  // Called from CheckoutModal when confirmed
+  
   const handleCompleteOrder = async (formData: {
     name: string;
     phone: string;
@@ -48,6 +52,27 @@ export default function CartPage({
 
     if (formData.paymentType === 'card') {
       toast.error('Currently unavailable. Only cash on delivery.');
+      return;
+    }
+
+    
+    let userEmail = currentUser?.email;
+    if (!userEmail) {
+      try {
+        const saved = localStorage.getItem('user');
+        if (saved) {
+          userEmail = JSON.parse(saved)?.email;
+        }
+      } catch {
+        
+      }
+    }
+
+    if (!userEmail) {
+      toast.error('Please sign in first to place your order.', {
+        icon: '🔒',
+      });
+      if (onNavigateToAuth) onNavigateToAuth('signin');
       return;
     }
 
@@ -64,26 +89,44 @@ export default function CartPage({
         year: 'numeric',
       });
 
+      const orderItems = cart.map((item) => ({
+        name: item.name,
+        brand: item.brand,
+        volume: item.volume,
+        quantity: Number(item.quantity) || 1,
+        price: Number(item.price) || 0,
+      }));
+
       await placeOrder({
         customer: formData.name,
-        email: currentUser?.email || `${formData.phone.replace(/\s+/g, '')}@luxera.lk`,
+        email: userEmail,
         phone: formData.phone,
         address: formData.address,
         paymentMethod: 'Cash on delivery',
         salon: `Island-wide COD (${formData.address})`,
         flacon: flaconSummary,
+        items: orderItems,
         quantity: itemCount,
         total: total,
         status: 'Pending',
         date: formattedDate,
       });
 
+      
+      setConfirmedEmail(userEmail);
+      setConfirmedAddress(formData.address);
+      setConfirmedTotal(total);
+      setConfirmedItemCount(itemCount);
+
       setShowCheckoutModal(false);
       setOrderConfirmed(true);
       if (onClearCart) {
         onClearCart();
       }
-      toast.success('Your order has been placed! Our courier dispatch is in progress.');
+      toast.success(`Order placed! Confirmation email sent to ${userEmail}`, {
+        duration: 4500,
+        icon: '✉️',
+      });
     } catch (error: any) {
       console.error('Checkout error:', error);
       const msg = error.response?.data?.message || 'Failed to place order. Please try again.';
@@ -110,8 +153,10 @@ export default function CartPage({
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {orderConfirmed ? (
             <OrderSuccess
-              itemCount={itemCount}
-              total={total}
+              itemCount={confirmedItemCount || itemCount}
+              total={confirmedTotal || total}
+              email={confirmedEmail}
+              address={confirmedAddress}
               onContinueShopping={handleReturnToBoutique}
             />
           ) : cart.length === 0 ? (
@@ -145,7 +190,7 @@ export default function CartPage({
         © 2026 LUXERA Fine Fragrance House. All rights reserved.
       </footer>
 
-      {/* Checkout Modal Popup */}
+     
       <CheckoutModal
         isOpen={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}

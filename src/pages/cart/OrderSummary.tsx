@@ -20,7 +20,7 @@ export default function OrderSummary({
           Order Summary
         </h3>
 
-        {/* Pricing Breakdown - Clean & Straightforward */}
+        
         <div className="space-y-3 text-xs">
           <div className="flex justify-between items-center text-zinc-400">
             <span>Subtotal</span>
@@ -53,7 +53,7 @@ export default function OrderSummary({
           </div>
         </div>
 
-        {/* Checkout Button */}
+        
         <div>
           <button
             type="button"
@@ -66,7 +66,7 @@ export default function OrderSummary({
           </button>
         </div>
 
-        {/* Delivery & COD Guarantees */}
+        
         <div className="pt-2 border-t border-white/10 space-y-2 text-xs text-zinc-400">
           <div className="flex items-center gap-2 text-zinc-300">
             <Banknote className="w-4 h-4 text-[#d4af37] shrink-0" />

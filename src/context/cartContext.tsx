@@ -4,15 +4,15 @@ import {
   useState,
   useEffect,
   type ReactNode,
-} from 'react';
-import type { Product } from '../service/product';
+} from "react";
+import type { Product } from "../service/product";
 
 export interface CartItem {
   id: string;
   number: string;
   name: string;
   brand: string;
-  category: 'Men' | 'Women' | 'Unisex';
+  category: "Men" | "Women" | "Unisex";
   concentration: string;
   price: number;
   volume: string;
@@ -44,7 +44,8 @@ export const CartContext = createContext<CartContextType>({
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      const saved = localStorage.getItem('luxera_cart') || localStorage.getItem('cart');
+      const saved =
+        localStorage.getItem("luxera_cart") || localStorage.getItem("cart");
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
@@ -52,13 +53,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
       }
     } catch (error) {
-      console.error('Error loading cart from storage:', error);
+      console.error("Error loading cart from storage:", error);
     }
     return [];
   });
 
   useEffect(() => {
-    localStorage.setItem('luxera_cart', JSON.stringify(cart));
+    localStorage.setItem("luxera_cart", JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product: Product) => {
@@ -71,7 +72,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return prev.map((item) =>
           item.id === productId
             ? { ...item, quantity: item.quantity + 1 }
-            : item
+            : item,
         );
       }
 
@@ -94,16 +95,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (productId: string, delta: number) => {
-    setCart((prev) =>
-      prev
-        .map((item) => {
-          if (item.id === productId) {
-            const nextQty = item.quantity + delta;
-            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
+    setCart(
+      (prev) =>
+        prev
+          .map((item) => {
+            if (item.id === productId) {
+              const nextQty = item.quantity + delta;
+              return nextQty > 0 ? { ...item, quantity: nextQty } : null;
+            }
+            return item;
+          })
+          .filter(Boolean) as CartItem[],
     );
   };
 
@@ -118,7 +120,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
 
   return (
