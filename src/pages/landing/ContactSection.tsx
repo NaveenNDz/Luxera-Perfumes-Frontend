@@ -1,9 +1,8 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import {
   MapPin,
   Phone,
   Mail,
-  Clock,
   Check,
   MessageCircle,
   Send,

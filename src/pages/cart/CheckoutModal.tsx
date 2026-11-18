@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent } from 'react';
-import { X, ShieldCheck, AlertCircle, CheckCircle2, Truck, CreditCard, Banknote } from 'lucide-react';
+import { X, AlertCircle, CheckCircle2, Banknote } from 'lucide-react';
 import type { CartItem } from '../../context/cartContext';
 import type { User } from '../../service/auth';
 
